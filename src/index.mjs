@@ -75,7 +75,8 @@
 //     console.log(`app is running on port ${PORT}`)
 // })
 // data checking using both id and name of the user
-import express from 'express';
+import express, { response } from 'express';
+
 const app=express()
 const Port=3000;
 const users=[{id:1,user_name:"kathir"},
@@ -124,4 +125,19 @@ app.get("/api/bike",(req,res)=>{
     if(filter && value){
       return  res.send(bike.filter(model=>model[filter].toLowerCase().includes(value.toLowerCase())));
     }
+})
+//middleware
+app.use(express.json())
+app.post("/api/user",(req,res)=>{
+  console.log(req.body);
+  //request body 
+  const body=req.body;
+  //creating new user set new id and user_name
+  const new_user={id:users[users.length-1].id+1,...body}
+  //pushing new user to user list 
+  users.push(new_user);
+  console.log(users)
+ // response 
+  return res.status(201).send({users,new_user})
+
 })
