@@ -141,3 +141,40 @@ app.post("/api/user",(req,res)=>{
   return res.status(201).send({users,new_user})
 
 })
+app.put("/api/user/:id",(req,res)=>{
+  const id=parseInt(req.params.id);
+  if(isNaN(id)){
+    return res.status(404).send({message:"ID is not valid is in valid"})
+  }
+  const userindex=users.findIndex(i=>i.id===id);
+  if(userindex===-1){
+    return res.status(404).send({message:"user not found"})
+  }
+  users[userindex]={id:id,...req.body}
+  
+  return res.status(200).send({msg:"user data updated",...users})
+})
+app.patch("/api/user/:id",(req,res)=>{
+  const id=parseInt(req.params.id);
+  if(isNaN(id)){
+    return res.status(404).send({message:"user not found"})
+  }
+  const userIndex=users.findIndex(user=>user.id===id);
+  if(userIndex===-1){
+    return res.status(404).send({message:"user not found"})
+  }
+  users[userIndex]={...users[userIndex],...req.body}
+  return res.status(200).send("ok")
+})
+app.delete("/api/user/:id",(req,res)=>{
+  const id=parseInt(req.params.id)
+  if(isNaN(id)){
+    return res.status(404).send({message:"enter a correct url"})
+  }
+  const userindex=users.findIndex(user=>user.id===id)
+  if(userindex===-1){
+    return res.status(404).send({message:"user not found"})
+  }
+  users.splice(userindex,1);
+  return res.status(404).send("ok");
+})
